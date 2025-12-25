@@ -1,2 +1,4 @@
 .idea
-Src/Main/Core/Logs/
+Src/logs/*
+
+*.pyc

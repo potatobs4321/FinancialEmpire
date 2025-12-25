@@ -1,9 +1,12 @@
 from enum import Enum
 
 class OrderStatus(Enum):
-    SUBMITTED = 0
-    FILLED_ALL = 1
-    FILLED_PART = 2
-    CANCELED = 2
-    CLOSED = 3
+    PENDING = "PENDING"
+    FILLED = "FILLED"
+    PARTIALLY_FILLED = "PARTIALLY_FILLED"
+    REJECTED = "REJECTED"
+    CANCELLED = "CANCELLED"
 
+class OrderSide(Enum):
+    BUY = "BUY"
+    SELL = "SELL"

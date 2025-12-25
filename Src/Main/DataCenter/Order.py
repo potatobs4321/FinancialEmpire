@@ -1,19 +1,23 @@
-from CommonDefine import OrderStatus
+from .CommonDefine import OrderStatus, OrderSide
+from datetime import datetime
+from dataclasses import dataclass, field
 
-class COrder():
-    def __init__(self, stock_id, price, qty):
-        self.stock_id = stock_id
-        self.price = price
-        self.qty = qty
-        # the status of a new order is always submitted
-        self.status = OrderStatus.SUBMITTED
-        self.filled_qty = 0
-        self.filled_price = 0
+@dataclass
+class Order:
+    order_id: int
+    trader_id: str
+    symbol: str
+    side: OrderSide
+    price: int  # 价格使用整数，避免浮点精度问题
+    quantity: int
+    filled_quantity: int = 0
+    status: OrderStatus = OrderStatus.PENDING
+    timestamp: datetime = field(default_factory=datetime.now)
 
-    def is_opened(self):
-        return self.status == OrderStatus.FILLED_ALL or \
-               self.status == OrderStatus.FILLED_PART
+    @property
+    def remaining_quantity(self) -> int:
+        return self.quantity - self.filled_quantity
 
-    def is_finished(self):
-        return self.status == OrderStatus.CANCELED or\
-            self.status == OrderStatus.CLOSED
+    def is_active(self) -> bool:
+        """订单是否仍然活跃（可以被撮合或撤销）"""
+        return self.status in [OrderStatus.PENDING, OrderStatus.PARTIALLY_FILLED] and self.remaining_quantity > 0
