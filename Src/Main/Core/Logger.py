@@ -49,10 +49,16 @@ class Logger(object):
 
     @classmethod
     def flush(cls, force=False):
-        if len(cls.temp_log) >= cls.max_cache_len or force:
-            with open(cls.file_name, "w", encoding='utf-8') as f:
-                for log_str in cls.temp_log:
-                    f.write(log_str + "\n")
+        if not cls.temp_log:
+            return
+        if not force and len(cls.temp_log) < cls.max_cache_len:
+            return
+        if cls.file_name == "":
+            cls.init_file_name()
+        with open(cls.file_name, "a", encoding="utf-8") as f:
+            for log_str in cls.temp_log:
+                f.write(log_str + "\n")
+        cls.temp_log.clear()
 
     @classmethod
     def set_max_cache_len(cls, cache_len):

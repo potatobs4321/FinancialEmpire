@@ -66,6 +66,10 @@ class Exchange:
             self.order_books[symbol] = OrderBook(symbol)
         return self.order_books[symbol]
 
+    def get_order_book_snapshot(self, symbol: str, depth: int = 8) -> dict:
+        """获取摆盘快照"""
+        return self._get_order_book(symbol).get_order_book_snapshot(depth)
+
     def _validate_order(self, trader: Trader, side: OrderSide, symbol: str,
                         price: int, quantity: int):
         """验证订单有效性"""
