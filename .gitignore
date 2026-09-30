@@ -1,4 +1,5 @@
 .idea
-Src/logs/*
+Src/Logs/*
+__pycache__/
 
 *.pyc

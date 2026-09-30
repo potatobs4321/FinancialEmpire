@@ -32,6 +32,9 @@ class MarketSimulation:
         self.exchange.setup_ipo(self.SYMBOL, self.IPO_PRICE, self.IPO_SHARES)
         self.traders = self._create_traders()
         self._run_ipo()
+        # 配售结束即视为发行收官，二级市场开盘。
+        # allocate_ipo 只在股票全部配出时才置位，这里显式补齐，
+        # 该标记目前仅用于状态展示（Exchange.print_status）。
         self.exchange.ipo_completed[self.SYMBOL] = True
         self.price_points = [(0.0, self.IPO_PRICE)]
         self.round_num = 1

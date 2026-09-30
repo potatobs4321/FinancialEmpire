@@ -303,11 +303,6 @@ class Exchange:
 
         return allocation_result
 
-    def _buy_from_ipo(self, trader: Trader, symbol: str, price: int, quantity: int) -> Optional[Order]:
-        """从IPO购买股票（已废弃，保留兼容性）"""
-        # 新的IPO流程使用 apply_ipo 和 allocate_ipo
-        return None
-
     def cancel_order(self, order_id: int) -> bool:
         """撤销订单"""
         order = self.all_orders.get(order_id)
@@ -332,33 +327,14 @@ class Exchange:
 
     def submit_order(self, trader_id: str, symbol: str, side: OrderSide,
                      price: int, quantity: int) -> Order:
-        """提交订单"""
+        """提交二级市场订单
+
+        本方法只负责二级市场的下单与撮合，不区分 IPO 阶段；
+        IPO 申购与配售请使用 apply_ipo / allocate_ipo。
+        """
         trader = self.traders.get(trader_id)
         if not trader:
             raise ValueError(f"未知的交易者: {trader_id}")
-
-        # 如果是买单且IPO未完成，优先从IPO购买
-        if side == OrderSide.BUY and not self.is_ipo_completed(symbol):
-            ipo_order = self._buy_from_ipo(trader, symbol, price, quantity)
-            if ipo_order:
-                return ipo_order
-            # 如果IPO买不了（比如没库存了），继续走正常流程
-
-        # 如果是卖单但IPO未完成，拒绝（二级市场还没开放）
-        if side == OrderSide.SELL and not self.is_ipo_completed(symbol):
-            order = Order(
-                order_id=self.next_order_id,
-                trader_id=trader_id,
-                symbol=symbol,
-                side=side,
-                price=price,
-                quantity=quantity,
-                status=OrderStatus.REJECTED
-            )
-            self.all_orders[order.order_id] = order
-            self.next_order_id += 1
-            Logger.write_log(LogLevel.INFO, f"[拒绝] 订单 {order.order_id}: IPO未完成，暂不能卖出")
-            return order
 
         # 创建订单
         order = Order(

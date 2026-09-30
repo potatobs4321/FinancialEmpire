@@ -1,0 +1,15 @@
+# FinancialEmpire 运行依赖
+# 目标环境：Python 3.8+（工程 SDK 为 Python 3.8）
+#
+# 标准库部分（heapq / random / dataclasses / enum / datetime / pathlib / collections / typing / math）
+# 无需安装。
+#
+# 安装：
+#   pip install -r requirements.txt
+
+# GUI 框架（主窗口、摆盘视图、价格曲线）
+PyQt5>=5.15.0,<6.0
+
+# 交易者初始资金的分布采样（对数正态分布）
+# 注意：numpy 1.25 起已不再支持 Python 3.8；若坚持用 3.8，请使用 numpy<1.25
+numpy>=1.20

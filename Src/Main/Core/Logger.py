@@ -31,11 +31,10 @@ class Logger(object):
         log_dir = "Logs"
         current_file = Path(__file__).resolve()
 
-        project_root_path = current_file.parent.parent.parent
-        Path(project_root_path / log_dir).mkdir(parents=True, exist_ok=True)
-        cls.file_name = project_root_path / log_dir / cls.file_name
-        print(cls.file_name)
-        # os.makedirs(cls.file_name, exist_ok=True)
+        # 本文件位于 Src/Main/Core/Logger.py，向上三级即 Src 目录，日志统一落在 Src/Logs 下
+        src_root_path = current_file.parent.parent.parent
+        Path(src_root_path / log_dir).mkdir(parents=True, exist_ok=True)
+        cls.file_name = src_root_path / log_dir / cls.file_name
 
     @classmethod
     def make_log_str(cls, log_level, content):

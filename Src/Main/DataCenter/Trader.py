@@ -31,7 +31,7 @@ class Trader:
         return self.expected_prices.get(symbol, 0)
 
     def update_expected_price(self, symbol: str, current_round: int) -> tuple:
-        """更新对某只股票价格的预期（每隔3-5轮更新一次）
+        """更新对某只股票价格的预期（每隔 1-5 轮更新一次）
 
         Args:
             symbol: 股票代码
@@ -60,7 +60,7 @@ class Trader:
             # 保存预期价格和更新信息
             self.expected_prices[symbol] = expected
             self.expected_price_update_round[symbol] = current_round
-            self.expected_price_interval[symbol] = random.randint(1, 5)  # 下次更新间隔3-5轮
+            self.expected_price_interval[symbol] = random.randint(1, 5)  # 下次更新间隔 1-5 轮
 
             return (expected, expected != old_expected)
 
