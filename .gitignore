@@ -1,5 +1,6 @@
 .idea
 Src/Logs/*
+Src/Config/
 __pycache__/
 
 *.pyc

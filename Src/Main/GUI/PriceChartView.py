@@ -10,7 +10,7 @@ class PriceChartView(QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setMinimumSize(480, 420)
+        self.setMinimumSize(480, 220)
         self._started = False
         self._points = []
         self._ipo_price = None

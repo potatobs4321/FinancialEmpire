@@ -7,6 +7,8 @@ class OrderBookView(QWidget):
     """买卖盘深度。卖盘在上、买盘在下，最优价贴着中间的最新价。"""
 
     LEVELS = 8
+    # 数量条的横向占比：留出右侧余白，避免最长的一根顶到面板边缘
+    BAR_WIDTH_RATIO = 0.7
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -102,7 +104,8 @@ class OrderBookView(QWidget):
 
         price_rect = QRectF(row.left() + 8, row.top(), 72, row.height())
         qty_rect = QRectF(price_rect.right(), row.top(), 78, row.height())
-        bar_rect = QRectF(qty_rect.right() + 8, row.top() + 5, row.right() - qty_rect.right() - 16, row.height() - 10)
+        bar_width = (row.right() - qty_rect.right() - 16) * self.BAR_WIDTH_RATIO
+        bar_rect = QRectF(qty_rect.right() + 8, row.top() + 5, bar_width, row.height() - 10)
 
         if bar_rect.width() > 0 and bar_rect.height() > 0:
             painter.setPen(Qt.NoPen)
